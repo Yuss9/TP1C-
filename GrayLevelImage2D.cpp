@@ -185,4 +185,27 @@ void GrayLevelImage2D::medianFilter(int k)
 }
 
 
+void GrayLevelImage2D::convulation(double coefficient){
+    GrayLevelImage2D copy(*this);
+    for (int j = 0; j < m_height; ++j)
+    {
+        for (int i = 0; i < m_width; ++i)
+        {
+            double sum = 0;
+            for (int y = -1; y <= 1; ++y)
+            {
+                for (int x = -1; x <= 1; ++x)
+                {
+                    if (i + x >= 0 && i + x < m_width && j + y >= 0 && j + y < m_height)
+                    {
+                        sum += copy.at(i + x, j + y) * coefficient;
+                    }
+                }
+            }
+            at(i, j) = sum;
+        }
+    }
+}
+
+
 

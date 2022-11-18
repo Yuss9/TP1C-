@@ -5,6 +5,11 @@
 #include "GrayLevelImage2D.cpp"
 using namespace std;
 
+
+
+
+
+
 int testMedianFilter()
 {
   typedef GrayLevelImage2D::GrayLevel GrayLevel;
@@ -61,14 +66,14 @@ int main(int argc, char **argv)
   }
   input.close();
 
-  img.medianFilter(10);
+  img.convulation(0.1);
 
   // for (Iterator it = img.begin(), itE = img.end(); it != itE; ++it)
   // {
   //   *it = (2 * (int)(*it)) % 256;
   // }
 
-  ofstream output("lenaBruitSol.pgm"); // récupère le 2ème argument.
+  ofstream output("lenaConvo.pgm"); // récupère le 2ème argument.
   ok = img.exportPGM(output, false);
   if (!ok)
   {
