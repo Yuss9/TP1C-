@@ -26,13 +26,6 @@ int main(int argc, char **argv)
   typedef GrayLevelImage2D::GrayLevel GrayLevel;
   typedef GrayLevelImage2D::Iterator Iterator;
 
-  //  je pense que le truc du prof est faux car on parcours toute l'image
-
-  // if ( argc < 3 )
-  //   {
-  //     std::cerr << "Usage: double-brightness <input.pgm> <output.pgm>" << std::endl;
-  //     return 0;
-  //   }
   GrayLevelImage2D img;
   ifstream input("lena-input.pgm"); // récupère le 1er argument.
   bool ok = img.importPGM(input);

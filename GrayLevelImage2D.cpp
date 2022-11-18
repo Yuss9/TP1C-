@@ -88,10 +88,6 @@ std::pair<int, int> GrayLevelImage2D::position(Iterator it) const
 
 bool GrayLevelImage2D::importPGM(std::istream &input)
 {
-    // read header
-    // string magic;
-    // input >> magic;
-
 
     stringstream ss;    
     string inputLine = "";
@@ -119,31 +115,9 @@ bool GrayLevelImage2D::importPGM(std::istream &input)
         cout << m_width << " columns and " << m_height << " rows" << endl;
     }
 
-
-    // string comment = "";
-    // getline(input, comment); // read the second line : comment
-    // cout << "Comment : " << comment << endl;
-
-    // read width and height
-    // input >> m_width >> m_height;
-    // cout << "la taille de l'image est " << m_width << " " << m_height << endl;
-
     ss << input.rdbuf();   //read the third line : width and height
     ss >> m_width >> m_height;
     cout << m_width << " columns and " << m_height << " rows" << endl;
-
-
-    // read max gray level
-    // int max_gray_level;
-    // input >> max_gray_level;
-
-    // cout << "le max gray level de l'image est : " << max_gray_level << endl;
-
-    // if (max_gray_level != 255)
-    // {
-    //     cerr << "Error: max gray level is not 255" << endl;
-    //     return false;
-    // }
 
     int max_val;  //maximum intensity value : 255
     ss >> max_val;
@@ -168,16 +142,6 @@ bool GrayLevelImage2D::importPGM(std::istream &input)
             *it = gl;
         }
     }
-
-
-    //print all image
-    for (Iterator it = begin(), itE = end(); it != itE; ++it)
-    {
-        cout << *it << " ";
-    }
-
-
-
     return true;
 }
 
@@ -194,20 +158,20 @@ bool GrayLevelImage2D::exportPGM(std::ostream &output, bool ascii)
         {
             for (int i = 0; i < m_width; ++i)
             {
-                output << (int)at(i, j) << " ";
+                output << 0 << " ";
             }
             output << endl;
         }
     }
     else
-    {
+    {   
+        cout<<"dans le else"<<endl; 
         //write in file with for loop
-        for (int j = 0; j < m_height; ++j)
-        {
-            for (int i = 0; i < m_width; ++i)
-            {
-                output << (unsigned char)at(i, j);
-            }
+        unsigned char gl;
+        for (Iterator it = begin(), itE = end(); it != itE; ++it)
+        {   
+            gl = *it;
+            output << gl;
         }
     }
     return true;
