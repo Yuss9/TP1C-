@@ -123,25 +123,38 @@ bool GrayLevelImage2D::importPGM(std::istream &input)
     ss >> max_val;
     cout<<max_val;
 
+
+    cout<<"la taille est : "<< m_width <<m_height<<endl;
+
     // read data
     m_data.resize(m_width * m_height);
+
+    
 
     if (isP5)
     {
         unsigned char gl;
         for (Iterator it = begin(), itE = end(); it != itE; ++it)
         {
-            input >> gl;
             *it = gl;
+            input >> gl;
+            cout << (int) gl << ' ';
+
         }
     }else{
         int gl;
         for (Iterator it = begin(), itE = end(); it != itE; ++it)
         {
-            input >> gl;
             *it = gl;
+            input >> gl;
+            cout << (int)gl << ' ';
+
         }
     }
+
+
+    //print the data
+
     return true;
 }
 
@@ -158,7 +171,7 @@ bool GrayLevelImage2D::exportPGM(std::ostream &output, bool ascii)
         {
             for (int i = 0; i < m_width; ++i)
             {
-                output << 0 << " ";
+                output << 0 << ' ';
             }
             output << endl;
         }
