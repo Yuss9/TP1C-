@@ -4,6 +4,8 @@
 #include <fstream>
 #include <algorithm>
 #include "GrayLevelImage2D.hpp"
+#include "GrayLevelImage2D.cpp"
+
 
 using namespace std;
 
@@ -16,13 +18,13 @@ int main( int argc, char** argv )
 {
   typedef GrayLevelImage2D::GrayLevel GrayLevel;
   typedef GrayLevelImage2D::Iterator Iterator;
-  if ( argc < 3 ) 
-    { 
-      std::cerr << "Usage: bruit-impulsionnel <input.pgm> <output.pgm> <prob>" << std::endl;
-      return 0;
-    }
+  // if ( argc < 3 ) 
+  //   { 
+  //     std::cerr << "Usage: bruit-impulsionnel <input.pgm> <output.pgm> <prob>" << std::endl;
+  //     return 0;
+  //   }
   GrayLevelImage2D img;
-  ifstream input( argv[1] ); // récupère le 1er argument.
+  ifstream input( "lena-input.pgm"); // récupère le 1er argument.
   bool ok = img.importPGM( input );
   if ( !ok )
     {
@@ -31,7 +33,7 @@ int main( int argc, char** argv )
     }
   input.close();
 
-  double prob = (argc > 3) ? atof( argv[ 3 ] ) : 0.01; // récupère la probabilité de bruit
+  double prob = 0.9;// récupère la probabilité de bruit
   for ( Iterator it = img.begin(), itE = img.end(); it != itE; ++it )
     {
       if ( rand01() < prob )
@@ -39,7 +41,7 @@ int main( int argc, char** argv )
 	  *it = ( rand01() < 0.5 ) ? 0 : 255;
 	}
     }
-  ofstream output( argv[2] ); // récupère le 2ème argument.
+  ofstream output( "lenaBruit90.pgm" ); // récupère le 2ème argument.
   ok = img.exportPGM( output, false );
   if ( !ok )
     {

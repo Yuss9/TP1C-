@@ -18,14 +18,14 @@ int main(int argc, char **argv)
   //   //! [tgli2d-sec3]
   // }
 
-  {
-    // a verifier le 4 pcq j'ai pas le meme nombre de 5 qui s'affiche
-    GrayLevelImage2D img(8, 8, 5); // imagette 8x8 remplie de 5
-    //! [tgli2d-sec4]
-    for (GrayLevelImage2D::Iterator it = img.begin(), itE = img.end(); it != itE; ++it)
-      std::cout << " " << (int)*it; // la conversion permet de voir les caractères sous forme d'entiers.
-                                    //! [tgli2d-sec4]
-  }
+  // {
+  //   // a verifier le 4 pcq j'ai pas le meme nombre de 5 qui s'affiche
+  //   GrayLevelImage2D img(8, 8, 5); // imagette 8x8 remplie de 5
+  //   //! [tgli2d-sec4]
+  //   for (GrayLevelImage2D::Iterator it = img.begin(), itE = img.end(); it != itE; ++it)
+  //     std::cout << " " << (int)*it; // la conversion permet de voir les caractères sous forme d'entiers.
+  //                                   //! [tgli2d-sec4]
+  // }
 
   // typedef GrayLevelImage2D::GrayLevel GrayLevel;
   // typedef GrayLevelImage2D::Iterator  Iterator;

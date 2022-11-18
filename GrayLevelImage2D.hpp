@@ -56,7 +56,8 @@ public:
   
   bool importPGM( std::istream & input );
   bool exportPGM( std::ostream & output, bool ascii = true );
-  GrayLevelImage2D filtrageMedian(int dimension);
+  void medianFilter(int k);
+  // GrayLevelImage2D filtrageMedian(int dimension);
   
 
 private:

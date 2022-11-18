@@ -98,7 +98,7 @@ string readline(std::istream &input) {
 bool GrayLevelImage2D::importPGM(std::istream &input) {
     if ( ! input.good() ) return false;
     std::string format = readline(input);
-    
+
     std::string line = readline(input);
     std::string delim = " ";
     m_width = std::stoi(line.substr(0, line.find(delim)));
@@ -125,8 +125,7 @@ bool GrayLevelImage2D::importPGM(std::istream &input) {
     return true;
 }
 
-bool 
-GrayLevelImage2D::exportPGM( ostream & output, bool ascii ) {
+bool GrayLevelImage2D::exportPGM( ostream & output, bool ascii ) {
     // write header
     output << "P5" << endl;
     output << m_width << " " << m_height << endl;
@@ -150,4 +149,37 @@ GrayLevelImage2D::exportPGM( ostream & output, bool ascii ) {
         }
     }
     return true;
+}
+
+
+/*  
+    Le filtrage médian est un algorithme très simple d'élimination de bruit dans une image. Il est très pertinent pour ce que l'on appelle le bruit impulsionnel, causé par des capteurs défectueux, ce qui sature ou désature complètement la valeur de certains pixels (ils deviennent tout blanc ou tout noir).
+
+Son principe est le suivant. On se donne un voisinage autour de chaque pixel (par exemple un voisinage 3x3). On met toutes les valeurs de ces pixels dans un tableau (ici 9 valeurs). On remplace la valeur du pixel par la valeur médiane des valeurs du tableau (On peut par exemple trier le tableau et prendre la 5ème valeur).
+
+Implémenter un algorithme de filtrage médian sous forme de commande en-ligne filtrage-median similaire à double-brightness. On pourra donner en plus un paramètre entier k, qui indique la taille du voisinage (2k+1 x 2k+1) autour de chaque point.
+*/
+
+void GrayLevelImage2D::medianFilter(int k)
+{
+    GrayLevelImage2D copy(*this);
+    for (int j = 0; j < m_height; ++j)
+    {
+        for (int i = 0; i < m_width; ++i)
+        {
+            std::vector<GrayLevel> values;
+            for (int y = -k; y <= k; ++y)
+            {
+                for (int x = -k; x <= k; ++x)
+                {
+                    if (i + x >= 0 && i + x < m_width && j + y >= 0 && j + y < m_height)
+                    {
+                        values.push_back(copy.at(i + x, j + y));
+                    }
+                }
+            }
+            std::sort(values.begin(), values.end());
+            at(i, j) = values[values.size() / 2];
+        }
+    }
 }
