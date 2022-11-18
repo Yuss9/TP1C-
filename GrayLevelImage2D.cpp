@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <exception>
+#include <fstream>
+#include <sstream>
 #include "GrayLevelImage2D.hpp"
 using namespace std;
 
@@ -67,7 +69,8 @@ GrayLevelImage2D::Iterator GrayLevelImage2D::begin()
 
 GrayLevelImage2D::Iterator GrayLevelImage2D::end()
 {
-    return Iterator(*this, m_width, 0);
+    return Iterator(*this, 0, m_height);
+    // ou return Iterator(*this, m_width, m_height-1);
 }
 
 GrayLevelImage2D::Iterator GrayLevelImage2D::start(int x, int y)
@@ -86,42 +89,97 @@ std::pair<int, int> GrayLevelImage2D::position(Iterator it) const
 bool GrayLevelImage2D::importPGM(std::istream &input)
 {
     // read header
-    string magic;
-    input >> magic;
-    if (magic != "P5")
+    // string magic;
+    // input >> magic;
+
+
+    stringstream ss;    
+    string inputLine = "";
+
+    getline(input,inputLine);  
+
+
+    bool isP5 = false;
+    if (inputLine != "P5")
     {
         cerr << "Error: magic number is not P5" << endl;
-        return false;
     }
-    // read width and height
-    input >> m_width >> m_height;
-    cout<<"la taille de l'image est "<<m_width<<" "<<m_height<<endl;
-    // read max gray level
-    int max_gray_level;
-    input >> max_gray_level;
-
-    cout<<"le max gray level de l'image est : "<<max_gray_level<<endl;
-
-    if (max_gray_level != 255)
+    else
     {
-        cerr << "Error: max gray level is not 255" << endl;
-        return false;
+        isP5 = true;
     }
+
+    getline(input,inputLine);  // read the second line : comment
+    if(inputLine[0] == '#'){
+        cout << "Comment: " << inputLine << endl;
+    }
+    else{
+        ss << input.rdbuf();
+        ss >> m_width >> m_height;
+        cout << m_width << " columns and " << m_height << " rows" << endl;
+    }
+
+
+    // string comment = "";
+    // getline(input, comment); // read the second line : comment
+    // cout << "Comment : " << comment << endl;
+
+    // read width and height
+    // input >> m_width >> m_height;
+    // cout << "la taille de l'image est " << m_width << " " << m_height << endl;
+
+    ss << input.rdbuf();   //read the third line : width and height
+    ss >> m_width >> m_height;
+    cout << m_width << " columns and " << m_height << " rows" << endl;
+
+
+    // read max gray level
+    // int max_gray_level;
+    // input >> max_gray_level;
+
+    // cout << "le max gray level de l'image est : " << max_gray_level << endl;
+
+    // if (max_gray_level != 255)
+    // {
+    //     cerr << "Error: max gray level is not 255" << endl;
+    //     return false;
+    // }
+
+    int max_val;  //maximum intensity value : 255
+    ss >> max_val;
+    cout<<max_val;
+
     // read data
     m_data.resize(m_width * m_height);
 
-    //read data with unsigned char 
-    input.read((char *)&m_data[0], m_width * m_height);
-
-    //print pixel
-    for (int i = 0; i < m_width * m_height; i++)
+    if (isP5)
     {
-        cout << (int)m_data[i] << " ";
+        unsigned char gl;
+        for (Iterator it = begin(), itE = end(); it != itE; ++it)
+        {
+            input >> gl;
+            *it = gl;
+        }
+    }else{
+        int gl;
+        for (Iterator it = begin(), itE = end(); it != itE; ++it)
+        {
+            input >> gl;
+            *it = gl;
+        }
     }
+
+
+    //print all image
+    for (Iterator it = begin(), itE = end(); it != itE; ++it)
+    {
+        cout << *it << " ";
+    }
+
+
 
     return true;
 }
-
 
 bool GrayLevelImage2D::exportPGM(std::ostream &output, bool ascii)
 {
@@ -143,16 +201,20 @@ bool GrayLevelImage2D::exportPGM(std::ostream &output, bool ascii)
     }
     else
     {
-        output.write((char *)&m_data[0], m_width * m_height);
+        //write in file with for loop
+        for (int j = 0; j < m_height; ++j)
+        {
+            for (int i = 0; i < m_width; ++i)
+            {
+                output << (unsigned char)at(i, j);
+            }
+        }
     }
     return true;
 }
 
-
-//GrayLevelImage2D filtrageMedian(int dimension);
-// GrayLevelImage2D GrayLevelImage2D::filtrageMedian(int dimension){
-//     //Noise removal using Median filter in C++
-
-    
+// GrayLevelImage2D filtrageMedian(int dimension);
+//  GrayLevelImage2D GrayLevelImage2D::filtrageMedian(int dimension){
+//      //Noise removal using Median filter in C++
 
 // }

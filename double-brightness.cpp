@@ -34,7 +34,7 @@ int main(int argc, char **argv)
   //     return 0;
   //   }
   GrayLevelImage2D img;
-  ifstream input("lena.pgm"); // récupère le 1er argument.
+  ifstream input("lena-input.pgm"); // récupère le 1er argument.
   bool ok = img.importPGM(input);
   if (!ok)
   {
@@ -42,18 +42,27 @@ int main(int argc, char **argv)
     return 1;
   }
   input.close();
-  for (Iterator it = img.begin(), itE = img.end(); it != itE; ++it)
+  // // for (Iterator it = img.begin(), itE = img.end(); it != itE; ++it)
+  // {
+  //   *it = (2 * (int)(*it)) % 256;
+  // }
+
+  //make copy of img
+  GrayLevelImage2D img2 = GrayLevelImage2D(img);
+
+  for (Iterator it = img2.begin(), itE = img2.end(); it != itE; ++it)
   {
     *it = (2 * (int)(*it)) % 256;
   }
-  // ofstream output( "lenalena.pgm" ); // récupère le 2ème argument.
-  // ok = img.exportPGM( output, false );
-  // if ( !ok )
-  //   {
-  //     std::cerr << "Error writing output file." << std::endl;
-  //      return 1;
-  //   }
-  // output.close();
+
+  ofstream output( "lenalena.pgm" ); // récupère le 2ème argument.
+  ok = img2.exportPGM( output, false );
+  if ( !ok )
+    {
+      std::cerr << "Error writing output file." << std::endl;
+       return 1;
+    }
+  output.close();
   return 0;
 
   // main recuperer sur le TP
