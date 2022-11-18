@@ -86,45 +86,41 @@ std::pair<int, int> GrayLevelImage2D::position(Iterator it) const
     return std::make_pair(x, y);
 }
 
-bool GrayLevelImage2D::importPGM( istream & input ) {
-     // read header
+
+string readline(std::istream &input) {
     string str;
-    getline( input, str );
-    if (str != "P5")
-    {
-        cerr << endl << "Error: str number is not P5" << endl;
-        return false;
+    do {
+        getline( input, str );
+    } while (str != ""  && str[0]=='#');
+    return str;
+}
+
+bool GrayLevelImage2D::importPGM(std::istream &input) {
+    if ( ! input.good() ) return false;
+    std::string format = readline(input);
+    std::string line = readline(input);
+    std::string delim = " ";
+    m_width = std::stoi(line.substr(0, line.find(delim)));
+    line.erase(0, line.find(delim) + delim.length());
+    m_height = std::stoi(line);
+    std::cout << m_width << " " << m_height << " " << format << std::endl;
+    std::cout << readline(input) << std::endl; // grayscale range
+    fill(0);
+    if (format == "P5") {
+        input >> std::noskipws;
+        unsigned char v;
+        for ( Iterator it = begin(), itE = end(); it != itE; ++it ) {
+            input >> v;
+            *it = v;
+        }
+    } else {
+        input >> std::skipws;
+        int v;
+        for ( Iterator it = begin(), itE = end(); it != itE; ++it ) {
+            input >> v;
+            *it = v;
+        }
     }
-
-    getline( input, str );
-    if (( str != "" ) && (str[0]=='#')) 
-        cout << endl << "Commentaire : " << str << endl;
-    // read width and height
-    input >> m_width >> m_height;
-    cout<<"la taille de l'image est "<<m_width<<" "<<m_height<<endl;
-    // read max gray level
-    int max_gray_level;
-    input >> max_gray_level;
-
-    cout<<"le max gray level de l'image est : "<<max_gray_level<<endl;
-
-    if (max_gray_level != 255)
-    {
-        cerr << "Error: max gray level is not 255" << endl;
-        return false;
-    }
-    // read data
-    m_data.resize(m_width * m_height);
-
-    //read data with unsigned char 
-    input.read((char *)&m_data[0], m_width * m_height);
-
-    //print pixel
-    /*for (int i = 0; i < m_width * m_height; i++)
-    {
-        cout << (int)m_data[i] << " ";
-    }*/
-
     return true;
 }
 
@@ -148,7 +144,9 @@ GrayLevelImage2D::exportPGM( ostream & output, bool ascii ) {
     }
     else
     {
-        output.write((char *)&m_data[0], m_width * m_height);
+        for ( Iterator it = begin(), itE = end(); it != itE; ++it ) {
+            output << *it;
+        }
     }
     return true;
 }
