@@ -109,14 +109,10 @@ bool GrayLevelImage2D::importPGM(std::istream &input)
     }
     // read data
     m_data.resize(m_width * m_height);
-    //input.read((char *)&m_data[0], m_width * m_height);
 
-    //read file and put data on m_data
-    for (int i = 0; i < m_width * m_height; i++)
-    {
-        input.read((char *)&m_data[i], 1);
-    }
+    //read data with unsigned char 
 
+    
 
 
     return true;
