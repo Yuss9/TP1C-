@@ -98,6 +98,7 @@ string readline(std::istream &input) {
 bool GrayLevelImage2D::importPGM(std::istream &input) {
     if ( ! input.good() ) return false;
     std::string format = readline(input);
+    
     std::string line = readline(input);
     std::string delim = " ";
     m_width = std::stoi(line.substr(0, line.find(delim)));
