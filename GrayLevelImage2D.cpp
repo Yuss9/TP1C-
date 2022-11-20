@@ -86,17 +86,20 @@ std::pair<int, int> GrayLevelImage2D::position(Iterator it) const
     return std::make_pair(x, y);
 }
 
-
-string readline(std::istream &input) {
+string readline(std::istream &input)
+{
     string str;
-    do {
-        getline( input, str );
-    } while (str != ""  && str[0]=='#');
+    do
+    {
+        getline(input, str);
+    } while (str != "" && str[0] == '#');
     return str;
 }
 
-bool GrayLevelImage2D::importPGM(std::istream &input) {
-    if ( ! input.good() ) return false;
+bool GrayLevelImage2D::importPGM(std::istream &input)
+{
+    if (!input.good())
+        return false;
     std::string format = readline(input);
 
     std::string line = readline(input);
@@ -107,17 +110,22 @@ bool GrayLevelImage2D::importPGM(std::istream &input) {
     std::cout << m_width << " " << m_height << " " << format << std::endl;
     std::cout << readline(input) << std::endl; // grayscale range
     fill(0);
-    if (format == "P5") {
+    if (format == "P5")
+    {
         input >> std::noskipws;
         unsigned char v;
-        for ( Iterator it = begin(), itE = end(); it != itE; ++it ) {
+        for (Iterator it = begin(), itE = end(); it != itE; ++it)
+        {
             input >> v;
             *it = v;
         }
-    } else {
+    }
+    else
+    {
         input >> std::skipws;
         int v;
-        for ( Iterator it = begin(), itE = end(); it != itE; ++it ) {
+        for (Iterator it = begin(), itE = end(); it != itE; ++it)
+        {
             input >> v;
             *it = v;
         }
@@ -125,7 +133,8 @@ bool GrayLevelImage2D::importPGM(std::istream &input) {
     return true;
 }
 
-bool GrayLevelImage2D::exportPGM( ostream & output, bool ascii ) {
+bool GrayLevelImage2D::exportPGM(ostream &output, bool ascii)
+{
     // write header
     output << "P5" << endl;
     output << m_width << " " << m_height << endl;
@@ -144,15 +153,15 @@ bool GrayLevelImage2D::exportPGM( ostream & output, bool ascii ) {
     }
     else
     {
-        for ( Iterator it = begin(), itE = end(); it != itE; ++it ) {
+        for (Iterator it = begin(), itE = end(); it != itE; ++it)
+        {
             output << *it;
         }
     }
     return true;
 }
 
-
-/*  
+/*
     Le filtrage médian est un algorithme très simple d'élimination de bruit dans une image. Il est très pertinent pour ce que l'on appelle le bruit impulsionnel, causé par des capteurs défectueux, ce qui sature ou désature complètement la valeur de certains pixels (ils deviennent tout blanc ou tout noir).
 
 Son principe est le suivant. On se donne un voisinage autour de chaque pixel (par exemple un voisinage 3x3). On met toutes les valeurs de ces pixels dans un tableau (ici 9 valeurs). On remplace la valeur du pixel par la valeur médiane des valeurs du tableau (On peut par exemple trier le tableau et prendre la 5ème valeur).
@@ -184,28 +193,26 @@ void GrayLevelImage2D::medianFilter(int k)
     }
 }
 
-
-void GrayLevelImage2D::convulation(double coefficient){
+void GrayLevelImage2D::convolation(double coefficient)
+{
     GrayLevelImage2D copy(*this);
-    for (int j = 0; j < m_height; ++j)
+    for (int j = 0; j < m_width; ++j)
     {
-        for (int i = 0; i < m_width; ++i)
-        {
-            double sum = 0;
-            for (int y = -1; y <= 1; ++y)
-            {
-                for (int x = -1; x <= 1; ++x)
-                {
-                    if (i + x >= 0 && i + x < m_width && j + y >= 0 && j + y < m_height)
-                    {
-                        sum += copy.at(i + x, j + y) * coefficient;
-                    }
-                }
-            }
-            at(i, j) = sum;
+        for (int i = 0; i < m_height; ++i)
+        {   
+
+            //le if permettent de verifier si on est sur la bordure de l'image ou pas
+            double newVal = at(i, j) * (1 + coefficient);
+            if (i > 0)
+                newVal -= at(i - 1, j) * (coefficient / 4);
+            if (i < m_width - 1)
+                newVal -= at(i + 1, j) * (coefficient / 4);
+            if (j > 0)
+                newVal -= at(i, j - 1) * (coefficient / 4);
+            if (j < m_height - 1)
+                newVal -= at(i, j + 1) * (coefficient / 4);
+            copy.at(i, j) = newVal;
         }
     }
+    *this = copy;
 }
-
-
-

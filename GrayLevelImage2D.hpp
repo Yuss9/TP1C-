@@ -55,8 +55,7 @@ public:
   bool importPGM(std::istream &input);
   bool exportPGM(std::ostream &output, bool ascii = true);
   void medianFilter(int k);
-
-  void convulation(double coefficient);
+  void convolation(double coefficient);
 
 private:
   // Calcule l'indice dans m_data du pixel (x,y).
