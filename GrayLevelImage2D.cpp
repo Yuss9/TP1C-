@@ -161,14 +161,6 @@ bool GrayLevelImage2D::exportPGM(ostream &output, bool ascii)
     return true;
 }
 
-/*
-    Le filtrage médian est un algorithme très simple d'élimination de bruit dans une image. Il est très pertinent pour ce que l'on appelle le bruit impulsionnel, causé par des capteurs défectueux, ce qui sature ou désature complètement la valeur de certains pixels (ils deviennent tout blanc ou tout noir).
-
-Son principe est le suivant. On se donne un voisinage autour de chaque pixel (par exemple un voisinage 3x3). On met toutes les valeurs de ces pixels dans un tableau (ici 9 valeurs). On remplace la valeur du pixel par la valeur médiane des valeurs du tableau (On peut par exemple trier le tableau et prendre la 5ème valeur).
-
-Implémenter un algorithme de filtrage médian sous forme de commande en-ligne filtrage-median similaire à double-brightness. On pourra donner en plus un paramètre entier k, qui indique la taille du voisinage (2k+1 x 2k+1) autour de chaque point.
-*/
-
 void GrayLevelImage2D::medianFilter(int k)
 {
     GrayLevelImage2D copy(*this);
