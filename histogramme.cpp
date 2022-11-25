@@ -3,7 +3,7 @@
 #include <exception>
 #include <fstream>
 #include <sstream>
-#include "Histogramme.hpp"
+#include "histogramme.hpp"
 using namespace std;
 
 

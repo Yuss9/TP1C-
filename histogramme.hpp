@@ -5,7 +5,6 @@
 #include <vector>
 #include <exception>
 #include "GrayLevelImage2D.hpp"
-#include "GrayLevelImage2D.cpp"
 
 using namespace std;
 

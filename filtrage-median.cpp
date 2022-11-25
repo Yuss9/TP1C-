@@ -1,15 +1,15 @@
 #include <iostream>
-#include <vector>
-#include <exception>
-#include "Histogramme.hpp"
+#include <fstream>
+#include "GrayLevelImage2D.hpp"
+using namespace std;
 
 int main(int argc, char **argv)
 {
     typedef GrayLevelImage2D::GrayLevel GrayLevel;
     typedef GrayLevelImage2D::Iterator Iterator;
-    if (argc < 2)
+    if (argc < 3)
     {
-        std::cerr << "Usage: filtre-median <input.pgm>" << std::endl;
+        std::cerr << "Usage: filtre-median <input.pgm> <output.pgm> <k=1>" << std::endl;
         return 0;
     }
     GrayLevelImage2D img;
@@ -22,20 +22,21 @@ int main(int argc, char **argv)
     }
     input.close();
 
-    Histogramme histo;
-    histo.init(img);
-
-    // egalisation de l'image
-    for (int i = 0; i < img.w(); i++)
+    int k;
+    if (argc == 4)
     {
-        for (int j = 0; j < img.h(); j++)
-        {
-            img.at(i, j) = histo.egalisation(img.at(i, j));
-        }
+        string s = argv[3];
+        if (s != "")
+            //convert s to int 
+            k = atoi(s.c_str());
+        else
+            k = 1;
     }
+    else
+        k = 1;
+    img.medianFilter(k);
 
-    // export image
-    ofstream output("lenaHistogramme.pgm"); // récupère le 2ème argument.
+    ofstream output(argv[2]); // récupère le 2ème argument.
     ok = img.exportPGM(output, false);
     if (!ok)
     {

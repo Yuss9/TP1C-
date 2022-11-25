@@ -3,7 +3,6 @@
 #include <fstream>
 #include <algorithm>
 #include "GrayLevelImage2D.hpp"
-#include "GrayLevelImage2D.cpp"
 #include <math.h>
 
 using namespace std;
@@ -23,7 +22,7 @@ int main(int argc, char **argv)
     return 0;
   }
   GrayLevelImage2D img;
-  ifstream input("lena.pgm");
+  ifstream input(argv[1]);
   bool ok = img.importPGM(input);
   if (!ok)
   {
