@@ -11,7 +11,8 @@ EXEC_SRC=\
 	bruit-gaussien.cpp
 
 MODULE_SRC=\
-	GrayLevelImage2D.cpp
+	GrayLevelImage2D.cpp\
+	histogramme.cpp
 
 MODULE_OBJ=${MODULE_SRC:.cpp=.o}
 EXEC_OBJ=${EXEC_SRC:.cpp=.o}
@@ -30,9 +31,6 @@ double-brightness: double-brightness.o ${MODULE_OBJ}
 	${LD} ${MODULE_OBJ} $< -o $@
 
 filtrage-median: filtrage-median.o ${MODULE_OBJ}
-	${LD} ${MODULE_OBJ} $< -o $@
-
-histogramme: histogramme.o ${MODULE_OBJ}
 	${LD} ${MODULE_OBJ} $< -o $@
 
 egalise: egalise.o ${MODULE_OBJ}
