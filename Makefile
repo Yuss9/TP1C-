@@ -6,7 +6,6 @@ EXEC_SRC=\
 	bruit-impulsionnel.cpp\
 	double-brightness.cpp\
 	filtrage-median.cpp\
-	histogramme.cpp\
 	egalise.cpp\
 	bruit-gaussien.cpp
 

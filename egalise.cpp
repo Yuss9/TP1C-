@@ -1,7 +1,8 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <exception>
-#include "Histogramme.hpp"
+#include "histogramme.hpp"
 
 int main(int argc, char **argv)
 {

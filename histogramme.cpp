@@ -15,7 +15,7 @@ Histogramme::Histogramme()
 
 
 // Cette classe aura une méthode void init( GrayLevelImage2D & img ), qui parcourera l'image pour calculer son histogramme et son histogramme cummulé.
-void Histogramme::init(GrayLevelImage2D & img)
+void Histogramme::init(GrayLevelImage2D& img)
 {
     for (int i = 0; i < img.w(); i++)
     {
