@@ -44,7 +44,7 @@ int main(int argc, char **argv)
       *it = *it + power * (sqrt(-2 * log(rand01())) * cos(2 * M_PI * rand01()));
     }
   }
-  ofstream output("bruited_" + string("lena.pgm"));
+  ofstream output("bruited_" + string(argv[1]));
   ok = img.exportPGM(output, false);
   if (!ok)
   {
